@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="container">
+    <form id="search">
+      <input id="searchInput" type="text" placeholder="Search">
+      <button type="submit">Search</button>
+    </form>
+
+    <h1 style="text-align: center; font-size: 50px;">Results</h1>
+
+    <div id="searchResults">
+
+    </div>
+    </div>
+    <div id="trendingResults">
+
+    </div>
+    <div id="">
+    <button id="loadMore" style="font-size: 35px" type="submit">Load More</button>
+    </div>
+  <script>
+    const API_KEY = "73H9V6lKlhDik4GLmoJG2CeTj9eTRuUS"
+    const endpoint1 = `https://api.giphy.com/v1/gifs/trending?api_key=${API_KEY}&limit=25`
+
+    //trending data
+  fetch(endpoint1)
+    .then(function (res) {
+      
+      if (!res.ok) {
+        throw Error("Issue getting data from server");
+      }
+      return res.json();
+    })
+    .then(function (data) {
+      
+      data.data.forEach(function(obj) {
+
+        const images = obj.images.fixed_width.url
+
+        document.getElementById('trendingResults').innerHTML += `<img src="${images}">`
+      })
+    })
+    .catch(function (error) {
+      
+      console.error(error);
+    });
+
+
+
+  // search data
+
+  document.getElementById('search').addEventListener('submit', function(el) {
+
+    document.getElementById('trendingResults').remove()
+    el.preventDefault()
+    const q = searchInput.value
+    search(q)
+    console.log(search)
+  })
+    function search(q) {
+
+    const endpoint2 = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${q}&limit=25`
+    fetch(endpoint2)
+    .then(function (res) {
+      
+      if (!res.ok) {
+        throw Error("Issue getting data from server");
+      }
+      return res.json();
+    })
+    .then(function (data) {
+      
+      console.log(data)
+      data.data.forEach(function(obj) {
+        
+        const images = obj.images.fixed_width.url
+
+        document.getElementById('searchResults').innerHTML += `<img src="${images}">`
+      })
+    })
+    .catch(function (error) {
+      
+      console.error(error);
+    });
+}
+
+//declare offset var that can update with each loadMore click
+let offset = 0;
+
+//load more data
+  document.getElementById('loadMore').addEventListener('click', function(el) {
+    
+    offset += 25;
+
+    el.preventDefault()
+    const q = searchInput.value
+    console.log(q)
+    searchMore(q)
+    console.log(searchMore)
+    console.log(offset)
+  })
+    function searchMore(q) {
+
+    const endpoint3 = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${q}&offset=${offset}&limit=25`
+    fetch(endpoint3)
+    .then(function (res) {
+      
+      if (!res.ok) {
+        throw Error("Issue getting data from server");
+      }
+      return res.json();
+    })
+    .then(function (data) {
+
+      console.log(data)
+      
+      data.data.forEach(function(obj) {
+     
+        const images = obj.images.fixed_width.url
+
+        document.getElementById('searchResults').innerHTML += `<img src="${images}">`
+      })
+    })
+    .catch(function (error) {
+      
+      console.error(error);
+    });
+}
+
+
+// load more button on click function
+/* document.getElementById('loadMore').addEventListener('click', function(event){
+   console.log('Button Clicked');
+
+   console.log(q)
+   search(q)
+}); */
+
+
+
+  </script>
+</body>
+</html>
