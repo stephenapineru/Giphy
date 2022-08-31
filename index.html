@@ -3,34 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
   <title>Document</title>
 </head>
 <body>
   <div id="container">
-    <form id="search">
+
+    <h1>Giphy</h1>
+
+    <form id="searchForm">
       <input id="searchInput" type="text" placeholder="Search">
-      <button type="submit">Search</button>
+      <button id="searchButton" type="submit">Search</button>
     </form>
 
-    <h1 style="text-align: center; font-size: 50px;">Results</h1>
-
-    <div id="searchResults">
+    <div id="results">
 
     </div>
+    <div id="loadDiv">
+      <button id="loadMore" type="submit">Load More</button>
     </div>
-    <div id="trendingResults">
 
-    </div>
-    <div id="">
-    <button id="loadMore" style="font-size: 35px" type="submit">Load More</button>
-    </div>
+  </div>
+</body>
+
   <script>
+
+    
     const API_KEY = "73H9V6lKlhDik4GLmoJG2CeTj9eTRuUS"
     const endpoint1 = `https://api.giphy.com/v1/gifs/trending?api_key=${API_KEY}&limit=25`
 
+
     //trending data
-  fetch(endpoint1)
+    window.onload = function(){
+    
+    fetch(endpoint1)
     .then(function (res) {
       
       if (!res.ok) {
@@ -41,29 +48,34 @@
     .then(function (data) {
       
       data.data.forEach(function(obj) {
+        console.log(obj.images)
+        const images = obj.images.downsized.url
 
-        const images = obj.images.fixed_width.url
-
-        document.getElementById('trendingResults').innerHTML += `<img src="${images}">`
+        document.getElementById('results').innerHTML += `<img src="${images}">`
       })
     })
     .catch(function (error) {
       
       console.error(error);
     });
+ }
+   
+
+    
 
 
 
   // search data
 
-  document.getElementById('search').addEventListener('submit', function(el) {
+  document.getElementById('searchForm').addEventListener('submit', function(el) {
 
-    document.getElementById('trendingResults').remove()
     el.preventDefault()
-    const q = searchInput.value
+    const q = searchInput.value;
+    document.getElementById('results').innerHTML = ""; 
+
     search(q)
-    console.log(search)
   })
+
     function search(q) {
 
     const endpoint2 = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${q}&limit=25`
@@ -77,12 +89,12 @@
     })
     .then(function (data) {
       
-      console.log(data)
+      /* console.log(data) */
       data.data.forEach(function(obj) {
-        
-        const images = obj.images.fixed_width.url
+      
+        const images = obj.images.fixed_height.url
 
-        document.getElementById('searchResults').innerHTML += `<img src="${images}">`
+        document.getElementById('results').innerHTML += `<img src="${images}">`
       })
     })
     .catch(function (error) {
@@ -101,10 +113,9 @@ let offset = 0;
 
     el.preventDefault()
     const q = searchInput.value
-    console.log(q)
+
     searchMore(q)
-    console.log(searchMore)
-    console.log(offset)
+
   })
     function searchMore(q) {
 
@@ -118,14 +129,12 @@ let offset = 0;
       return res.json();
     })
     .then(function (data) {
-
-      console.log(data)
       
       data.data.forEach(function(obj) {
      
         const images = obj.images.fixed_width.url
 
-        document.getElementById('searchResults').innerHTML += `<img src="${images}">`
+        document.getElementById('results').innerHTML += `<img src="${images}">`
       })
     })
     .catch(function (error) {
@@ -133,17 +142,6 @@ let offset = 0;
       console.error(error);
     });
 }
-
-
-// load more button on click function
-/* document.getElementById('loadMore').addEventListener('click', function(event){
-   console.log('Button Clicked');
-
-   console.log(q)
-   search(q)
-}); */
-
-
 
   </script>
 </body>

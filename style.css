@@ -1,0 +1,61 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #C2D5DF;
+    padding: 0 2%;
+}
+
+h1{
+    margin: 3rem 0;
+    text-align: center;
+    font-size: 55px;
+}
+
+input {
+    margin: .5rem;
+    padding: .5rem;
+    width: 15rem;
+    height: 3rem;
+}
+
+button{
+    width: 7rem;
+    height: 3rem;
+    background-color: #5dbea3;
+}
+
+button:hover {
+    background-color: #33b249;
+}
+
+#loadDiv{
+    text-align: center;
+    margin: 3rem 0;
+}
+#loadMore {
+    margin: 0 300px;
+    width: 20rem;
+    height: 7rem;
+    margin: .5rem;
+}
+
+#search {
+    margin: .5rem;
+    height: 1.5rem;
+}
+
+#searchResults, #trendingResults {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+img{
+    height: 250px;
+    width: 300px;
+    padding: .5rem;
+}
